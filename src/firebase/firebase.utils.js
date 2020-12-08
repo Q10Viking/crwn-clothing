@@ -10,15 +10,15 @@ var firebaseConfig = {
     measurementId: "G-S83K1E79L4"
   };
 
-  
+
 
   firebase.initializeApp(firebaseConfig);
-
   const provider = new firebase.auth.GoogleAuthProvider();
-
+  
+  export const auth = firebase.auth();
   export const signInWithGoogle = e => {
     e.preventDefault();
-    firebase.auth().signInWithPopup(provider);
+    auth.signInWithPopup(provider);
   } 
 
   export default firebase;
