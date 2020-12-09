@@ -17,27 +17,27 @@ class App extends React.Component {
   }
 
   componentDidMount(){
+    const {setCurrentUser} = this.props;
     // 订阅观察用户登录状态变化
    this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
       console.log("监控用户认证状态",user)
       if(user){
         console.log("获取到用户")
+        //  存储到数据库
         const userRef = await createUserProfileDocument(user);
-        console.log("等待结束")
+        // 订阅document数据变化，第一调用该方法时返回snapshot对应文档的数据，当文档数据发生变化时，再次触发该回调函数，此时数据为最新的变化数据
+        userRef.onSnapshot(snapshot => {
+          console.log("监听到user snapshot");
+          // 存储数据到app中，currentUser
+          setCurrentUser({
+            id: user.uid,
+            ...snapshot.data()
+          })
+        })
+      }else{
+        console.log("没有获取到用户");
+        setCurrentUser(user);
       }
-        // if(user){
-        //   console.log("sign out2");
-        //  const userRef = await createUserProfileDocument(user);
-        //  userRef.onSnapshop(snapshop => {
-        //   console.log("sign out3");
-        //    this.props.setCurrentUser({
-        //       id: user.uid,
-        //        ...snapshop
-        //    })
-        //  })
-        // }else{
-        //   this.props.setCurrentUser(user)
-        // }
     })
 }
 
