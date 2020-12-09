@@ -5,7 +5,7 @@ import {Route,Switch} from 'react-router-dom';
 import ShopPage from './pages/shoppage/shop-page.component';
 import Header from './components/header/header.component';
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import {auth} from './firebase/firebase.utils';
+import {auth,createUserProfileDocument} from './firebase/firebase.utils';
 
 class App extends React.Component {
 
@@ -20,9 +20,22 @@ class App extends React.Component {
 
   componentDidMount(){
     // 订阅观察用户登录状态变化
-   this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-        this.setState({currentUser:user})
-        console.log(user);
+   this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
+        if(user){
+         const userRef = await createUserProfileDocument(user);
+         userRef.onSnapshop(snapshop => {
+           this.setState({
+             currentUser: {
+               id: user.uid,
+               ...snapshop
+             }
+           })
+         })
+        }else{
+          this.setState({
+            currentUser:null
+          })
+        }
     })
 }
 
