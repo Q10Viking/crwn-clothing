@@ -6,17 +6,12 @@ import ShopPage from './pages/shoppage/shop-page.component';
 import Header from './components/header/header.component';
 import SignInAndSignUp from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import {auth,createUserProfileDocument} from './firebase/firebase.utils';
-
+import {connect} from 'react-redux';
+import {setCurrentUser} from './redux/user/user.actions';
 class App extends React.Component {
 
   unsubscribeFromAuth = null
 
-  constructor(){
-    super();
-    this.state = {
-      currentUser: null
-    }
-  }
 
   componentDidMount(){
     // 订阅观察用户登录状态变化
@@ -24,7 +19,7 @@ class App extends React.Component {
         if(user){
          const userRef = await createUserProfileDocument(user);
          userRef.onSnapshop(snapshop => {
-           this.setState({
+           this.props.setCurrentUser({
              currentUser: {
                id: user.uid,
                ...snapshop
@@ -32,7 +27,7 @@ class App extends React.Component {
            })
          })
         }else{
-          this.setState({
+          this.props.setCurrentUser({
             currentUser:null
           })
         }
@@ -58,4 +53,8 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+})
+
+export default connect(null,mapDispatchToProps)(App);
