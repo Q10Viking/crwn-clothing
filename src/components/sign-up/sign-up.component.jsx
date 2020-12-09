@@ -69,8 +69,20 @@ class SignUp extends React.Component{
 
     handleSubmit = event => {
         event.preventDefault();
+        const {password,confirmPassword} = this.state;
+
+        if(password !== confirmPassword){
+            alert("密码不相同");
+            this.setState({
+                password:'',
+                confirmPassword:''
+            })
+            return;
+        }
+
         // TODO firebase auth and store user info
         console.log(this.state);
+
 
         this.setState({
             displayName: '',
