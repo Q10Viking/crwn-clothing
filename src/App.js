@@ -11,26 +11,33 @@ import {setCurrentUser} from './redux/user/user.actions';
 class App extends React.Component {
 
   unsubscribeFromAuth = null
-
+  constructor(){
+    super();
+    this.state={}
+  }
 
   componentDidMount(){
     // 订阅观察用户登录状态变化
    this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
-        if(user){
-         const userRef = await createUserProfileDocument(user);
-         userRef.onSnapshop(snapshop => {
-           this.props.setCurrentUser({
-             currentUser: {
-               id: user.uid,
-               ...snapshop
-             }
-           })
-         })
-        }else{
-          this.props.setCurrentUser({
-            currentUser:null
-          })
-        }
+      console.log("监控用户认证状态",user)
+      if(user){
+        console.log("获取到用户")
+        const userRef = await createUserProfileDocument(user);
+        console.log("等待结束")
+      }
+        // if(user){
+        //   console.log("sign out2");
+        //  const userRef = await createUserProfileDocument(user);
+        //  userRef.onSnapshop(snapshop => {
+        //   console.log("sign out3");
+        //    this.props.setCurrentUser({
+        //       id: user.uid,
+        //        ...snapshop
+        //    })
+        //  })
+        // }else{
+        //   this.props.setCurrentUser(user)
+        // }
     })
 }
 
