@@ -16,6 +16,7 @@ class SignIn extends React.Component{
 
     handleSubmit = event => {
         event.preventDefault();
+        // TODO auth.signInWithEmailAndPassword
         this.setState({email:'',password:''});
     }
 
