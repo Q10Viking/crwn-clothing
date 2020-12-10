@@ -18,7 +18,7 @@ const Checkout = ({total,cartItems}) => (
                 <span>Quantity</span>
             </div>
             <div className="header-block">
-                <span>Price</span>
+                <span>Price &#128525;</span>
             </div>
             <div className="header-block">
                 <span>Remove</span>
