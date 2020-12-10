@@ -16,6 +16,13 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
+
+    .empty-message{
+      font-size: 20px;
+      margin: 50px auto;
+      color: gray;
+      font-weight: bold;
+    }
   }
 
   button {
