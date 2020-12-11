@@ -1,13 +1,5 @@
 import {createSelector} from 'reselect';
 
-const MAP_CATEGORY_TO_ID = {
-    hats: 1,
-    sneakers: 2,
-    jackets: 3,
-    womens: 4,
-    mens: 5
-}
-
 const getShop = state => state.shop;
 
 const shopSelector = createSelector(
@@ -15,15 +7,21 @@ const shopSelector = createSelector(
     shop => shop.collections
 )
 
+const selectCollectionsForPreview = createSelector(
+    shopSelector,
+    collections => Object.keys(collections).map( key => collections[key])
+)
+
 
 const collectionSelector = category => createSelector(
     shopSelector,
-    collections =>
-        collections.filter(collection => collection.id === MAP_CATEGORY_TO_ID[category])
+    collections => collections[category]
+
 )
 
 
 export {
     shopSelector,
-    collectionSelector
+    collectionSelector,
+    selectCollectionsForPreview
 } ;
